@@ -1,17 +1,35 @@
 package app.todayintech.wilsonburhan.com.todayintech;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import service.NewsList;
 
-public class TodayInTechActivity extends Activity {
+
+public class TodayInTechActivity extends FragmentActivity implements NewsList.OnArticleSelectedListener, NewsList.OnRefreshArticlesListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        if (findViewById(R.id.fragment_container) != null) {
+
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            NewsList smallScreenFragement = new NewsList();
+            smallScreenFragement.setArguments(getIntent().getExtras());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, smallScreenFragement)
+                    .commit();
+        }
+
+        //updateStories();
     }
 
 
@@ -32,5 +50,20 @@ public class TodayInTechActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onArticleSelected(long _id) {
+
+    }
+
+    @Override
+    public void onSelectDefault(long _id) {
+
+    }
+
+    @Override
+    public void onRefreshArticles() {
+
     }
 }
