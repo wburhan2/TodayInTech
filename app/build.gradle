@@ -23,5 +23,6 @@ dependencies {
     compile 'com.android.support:support-v4:19.1.0'
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.jakewharton:butterknife:5.1.2'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
