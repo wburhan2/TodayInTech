@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wilsonburhan.todayintech" >
+    package="com.wilsonburhan.todayintech"
+    android:installLocation="auto">
 
     <!-- Include following permission if you load images from Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,16 +12,28 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:hardwareAccelerated="true">
         <activity
             android:name=".TodayInTechActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider android:name="com.wilsonburhan.todayintech.provider.TodayInTechProvider"
+            android:authorities="com.wilsonburhan.todayintech" />
+
+        <service android:name="com.wilsonburhan.todayintech.service.TodayInTechService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.wilsonburhan.todayintech.action.clear"/>
+                <action android:name="com.wilsonburhan.todayintech.action.clearall"/>
+                <action android:name="com.wilsonburhan.todayintech.action.get"/>
+
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

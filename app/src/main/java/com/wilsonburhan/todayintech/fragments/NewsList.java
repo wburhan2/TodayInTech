@@ -1,4 +1,4 @@
-package com.wilsonburhan.todayintech.service;
+package com.wilsonburhan.todayintech.fragments;
 
 /**
  * Created by Wilson on 9/17/2014.
@@ -23,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.wilsonburhan.todayintech.R;
+import com.wilsonburhan.todayintech.TodayInTechContract;
 import com.wilsonburhan.todayintech.adapters.NewsListAdapter;
 
 public class NewsList extends Fragment implements LoaderCallbacks<Cursor>, OnItemClickListener {
@@ -47,7 +48,7 @@ public class NewsList extends Fragment implements LoaderCallbacks<Cursor>, OnIte
         setHasOptionsMenu(true);
         mAdapter = new NewsListAdapter(getActivity(), null, true);
         getLoaderManager().initLoader(0, null, this);
-       // getActivity().getContentResolver().registerContentObserver(HuffingtonPostContract.RSS_CONTENT_URI, true, contentObserver);
+        getActivity().getContentResolver().registerContentObserver(TodayInTechContract.RSS_FEED_URI, true, contentObserver);
     }
 
 /*
@@ -64,7 +65,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         Cursor cursor = mAdapter.getCursor();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-              //  mSelectedArticleCallback.onSelectDefault(cursor.getLong(cursor.getColumnIndex(HuffingtonPostContract.COLUMN_ID)));
+                mSelectedArticleCallback.onSelectDefault(cursor.getLong(cursor.getColumnIndex(TodayInTechContract.COLUMN_ID)));
             }
         }
     }
@@ -105,25 +106,24 @@ private ContentObserver contentObserver = new ContentObserver(null) {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        /*return new CursorLoader(
+        return new CursorLoader(
                 getActivity(),
-                HuffingtonPostContract.RSS_CONTENT_URI,
-                HuffingtonPostContract.DEFAULT_PROJECTION,
+                TodayInTechContract.RSS_FEED_URI,
+                TodayInTechContract.DEFAULT_PROJECTION,
                 null,
                 null,
-                null);*/
-        return null;
+                null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (cursor != null) {
-            //cursor.setNotificationUri(getActivity().getContentResolver(), HuffingtonPostContract.RSS_CONTENT_URI);
+            cursor.setNotificationUri(getActivity().getContentResolver(), TodayInTechContract.RSS_FEED_URI);
             mAdapter.swapCursor(cursor);
 
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
-                 //   mSelectedArticleCallback.onSelectDefault(cursor.getLong(cursor.getColumnIndex(HuffingtonPostContract.COLUMN_ID)));
+                    mSelectedArticleCallback.onSelectDefault(cursor.getLong(cursor.getColumnIndex(TodayInTechContract.COLUMN_ID)));
                 }
             }
         }
@@ -139,16 +139,16 @@ private ContentObserver contentObserver = new ContentObserver(null) {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (menu.size() == 0) {
-          //  inflater.inflate(R.menu.news, menu);
+            inflater.inflate(R.menu.news, menu);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-          //  case R.id.menu_refresh:
-             //   mRefreshArticlesListener.onRefreshArticles();
-             //   break;
+            case R.id.menu_refresh:
+                mRefreshArticlesListener.onRefreshArticles();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">TodayInTech</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="menu_share">Share</string>
+    <string name="loading_articles">Loading Articles</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="wanted_to_share">Share this Article</string>
+    <string name="edited">Edited: </string>
+    <string name="published">Published: </string>
 
 </resources>

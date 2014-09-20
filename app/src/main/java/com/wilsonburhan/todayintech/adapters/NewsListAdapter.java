@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wilsonburhan.todayintech.R;
+import com.wilsonburhan.todayintech.TodayInTechContract;
 
 public class NewsListAdapter extends CursorAdapter {
 
@@ -24,8 +25,8 @@ public class NewsListAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView articleTitle = (TextView) view.getTag(R.id.article_title);
         TextView articleSummary = (TextView) view.getTag(R.id.article_summary);
-      //  articleTitle.setText(cursor.getString(cursor.getColumnIndex(HuffingtonPostContract.COLUMN_TITLE)));
-       // articleSummary.setText(cursor.getString(cursor.getColumnIndex(HuffingtonPostContract.COLUMN_SUMMARY)));
+        articleTitle.setText(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_TITLE)));
+       // articleSummary.setText(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT)));
     }
 
     @Override

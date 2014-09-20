@@ -18,11 +18,9 @@ import java.net.MalformedURLException;
  * Created by Wilson on 9/18/2014.
  */
 public class URLImageParser implements Html.ImageGetter {
-    Context c;
     View container;
 
-    public URLImageParser(View t, Context c) {
-        this.c = c;
+    public URLImageParser(View t) {
         this.container = t;
     }
 

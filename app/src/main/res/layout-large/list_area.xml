@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <fragment android:name="com.wilsonburhan.todayintech.fragments.NewsList"
+              android:id="@+id/list_fragment"
+              android:layout_weight="1"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+        tools:layout="@layout/news_list" />
+
+    <fragment android:name="com.wilsonburhan.todayintech.fragments.ContentFragment"
+              android:id="@+id/content_fragment"
+              android:layout_weight="2"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+        tools:layout="@layout/news_content" />
+
+</LinearLayout>
