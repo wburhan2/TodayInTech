@@ -22,15 +22,12 @@ public class TodayInTechTable extends BaseTable {
     public long insert(SQLiteDatabase db, Uri uri, ContentValues values) {
         String[] shortProjection = new String[] {
                 TodayInTechContract.COLUMN_ID,
-                TodayInTechContract.COLUMN_ARTICLE_ID,
-                TodayInTechContract.COLUMN_FAVORITE
+                TodayInTechContract.COLUMN_ARTICLE_ID
         };
 
-        String selection = TodayInTechContract.COLUMN_ARTICLE_ID + " like ? and "
-                + TodayInTechContract.COLUMN_FAVORITE + " = ?";
+        String selection = TodayInTechContract.COLUMN_ARTICLE_ID + " like ?";
         String[] selectionArgs = new String[]
-                { values.getAsString(TodayInTechContract.COLUMN_ARTICLE_ID),
-                        "1" };
+                { values.getAsString(TodayInTechContract.COLUMN_ARTICLE_ID)};
         Cursor checkCursor = db.query(getTableName(), shortProjection, selection, selectionArgs, null, null, null);
 
         if (checkCursor != null) {
@@ -72,6 +69,7 @@ public class TodayInTechTable extends BaseTable {
                 TodayInTechContract.COLUMN_FAVORITE + " integer default 0," +
                 TodayInTechContract.COLUMN_PICTURE + " blob" +
                 ");";
+
         db.execSQL(sql);
 
     }

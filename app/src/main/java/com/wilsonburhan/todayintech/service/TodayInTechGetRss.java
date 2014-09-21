@@ -37,6 +37,8 @@ public class TodayInTechGetRss {
     private static final String ATOM = "http://www.w3.org/2005/Atom";
     private static final String PURL = "http://purl.org/dc/elements/1.1/";
     private static final String ITUNES = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+    private static final String FEED = "feed";
+    private static final String RSS = "rss";
 
 
     public static void get(ContentResolver contentResolver) {
@@ -54,12 +56,10 @@ public class TodayInTechGetRss {
 
         String rootName = getRootNode(stream);
 
-        if (rootName.equals("feed"))
+        if (rootName.equals(FEED))
             atomParser(stream, items, resolver);
-        else if (rootName.equals("rss")){
+        else if (rootName.equals(RSS))
             rssParser(stream, items, resolver);
-        }
-
     }
 
     private static void rssParser(InputStream stream, final ValueList items, ContentResolver resolver) throws IOException, SAXException{
@@ -103,7 +103,7 @@ public class TodayInTechGetRss {
         channel.getChild("item").getChild("pubDate").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
-                items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHED_DATE, body);
+                items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHED_DATE, DateUtils.parseDate(body));
             }
 
         });
@@ -180,14 +180,13 @@ public class TodayInTechGetRss {
             public void end(String body) {
                 items.currentRow.put(TodayInTechContract.COLUMN_ARTICLE_ID, body);
             }
-
         });
 
         // Add the Published Date
         root.getChild(ATOM, "entry").getChild(ATOM, "published").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
-                items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHED_DATE, body);
+                items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHED_DATE, DateUtils.parseDate(body));
             }
 
         });
@@ -196,7 +195,7 @@ public class TodayInTechGetRss {
         root.getChild(ATOM, "entry").getChild(ATOM, "updated").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
-                items.currentRow.put(TodayInTechContract.COLUMN_UPDATED_DATE, body);
+                items.currentRow.put(TodayInTechContract.COLUMN_UPDATED_DATE, DateUtils.parseDate(body));
             }
 
         });

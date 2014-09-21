@@ -41,7 +41,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
     @InjectView(R.id.article_content) TextView mContent;
     @InjectView(R.id.favorite) CheckBox mFavorite;
     @InjectView(R.id.feed_picture) ImageView mFeedImage;
-    @Optional @InjectView(R.id.published_date) TextView mPublishedDate;
+    @InjectView(R.id.article_date) TextView mPublishedDate;
     @Optional @InjectView(R.id.edited_date) TextView mEditedDate;
     private String mArticleUrl;
 
@@ -143,9 +143,8 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         String authorAndUri = "<a href=\"" + authorUri + "\">" + author + "</a>";
         mTitle.setText(title);
 
-        publishedDate = getActivity().getString(R.string.published) + publishedDate;
+        mPublishedDate.setText(publishedDate);
         editedDate = getActivity().getString(R.string.edited) + editedDate;
-
 
         // TODO: Fix this :
         // For some reason setMovementMethod is not working correctly - it should enable links embedded in HTML to be clickable to launch a website.

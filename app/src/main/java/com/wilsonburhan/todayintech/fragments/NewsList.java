@@ -109,13 +109,14 @@ private ContentObserver contentObserver = new ContentObserver(null) {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // TODO this is just a marking to note that this is the place for sorting the queries.
         return new CursorLoader(
                 getActivity(),
                 TodayInTechContract.RSS_FEED_URI,
                 TodayInTechContract.DEFAULT_PROJECTION,
                 null,
                 null,
-                null);
+                TodayInTechContract.COLUMN_PUBLISHED_DATE + " desc");
     }
 
     @Override

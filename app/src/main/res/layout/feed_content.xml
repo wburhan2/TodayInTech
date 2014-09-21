@@ -49,13 +49,20 @@
                 android:layout_below="@+id/article_title"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />
-
+            <TextView
+                android:id="@+id/article_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/article_author"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:textColor="@color/Black"/>
             <TextView
                 android:id="@+id/article_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@+id/article_author"
+                android:layout_below="@+id/article_date"
                 android:padding="8dp"
                 android:autoLink="web"
                 android:textSize="16sp" />
