@@ -2,19 +2,27 @@ package com.wilsonburhan.todayintech.service;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.sax.EndElementListener;
 import android.sax.EndTextElementListener;
 import android.sax.RootElement;
 import android.sax.StartElementListener;
+import android.util.Log;
 import android.util.Xml;
 
 import com.wilsonburhan.todayintech.TodayInTechContract;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
@@ -22,7 +30,7 @@ import java.net.URL;
  */
 public class TodayInTechGetRss {
     private static URL mUrl = null;
-    private static final String RSS_FEED_URL = "http://www.theverge.com/rss/index.xml";
+    private static final String RSS_FEED_URL = "http://podcasts.engadget.com/rss.xml";
     private static final String ATOM = "http://www.w3.org/2005/Atom";
 
 
@@ -107,7 +115,18 @@ public class TodayInTechGetRss {
         root.getChild(ATOM, "entry").getChild(ATOM, "content").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
-                items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
+                Document doc = Jsoup.parse(body);
+                Element png = doc.select("img").first();
+                if (png != null) {
+                    Bitmap pic = getBitmapFromURL(png.absUrl("src"));
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    pic.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                    items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, bos.toByteArray());
+                    items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+                }
+                else {
+                    items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
+                }
             }
 
         });
@@ -129,5 +148,23 @@ public class TodayInTechGetRss {
         Xml.parse(stream, Xml.Encoding.UTF_8, root.getContentHandler());
         resolver.bulkInsert(TodayInTechContract.RSS_FEED_URI, items.getRows());
 
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            Log.e("src", src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Log.e("Bitmap","returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Exception",e.getMessage());
+            return null;
+        }
     }
 }

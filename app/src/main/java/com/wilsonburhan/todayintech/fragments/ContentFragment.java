@@ -3,6 +3,8 @@ package com.wilsonburhan.todayintech.fragments;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -18,9 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wilsonburhan.todayintech.R;
+import com.wilsonburhan.todayintech.TodayInTechActivity;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 import com.wilsonburhan.todayintech.drawable.URLImageParser;
 
@@ -30,49 +34,50 @@ import com.wilsonburhan.todayintech.drawable.URLImageParser;
 public class ContentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
 
-private TextView mTitle;
-private TextView mAuthor;
-private TextView mContent;
-private TextView mPublishedDate;
-private TextView mEditedDate;
-private CheckBox mFavorite;
-private String mArticleUrl;
+    private TextView mTitle;
+    private TextView mAuthor;
+    private TextView mContent;
+    private TextView mPublishedDate;
+    private TextView mEditedDate;
+    private CheckBox mFavorite;
+    private String mArticleUrl;
+    private ImageView mFeedImage;
 
-//public final String CURRENT_ARTICLE_ID = "current_article_id";
-private long mID = -1;
+    //public final String CURRENT_ARTICLE_ID = "current_article_id";
+    private long mID = -1;
 
 
-@Override
-public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.e("TAG", "onCreate(ContentFragment)");
-        setHasOptionsMenu(true);
-        }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            Log.e("TAG", "onCreate(ContentFragment)");
+            setHasOptionsMenu(true);
+            }
 
-@Override
-public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (savedInstanceState != null) {
         mID = savedInstanceState.getInt(TodayInTechContract.COLUMN_ID);
         }
 
-        View contentView = inflater.inflate(R.layout.content_view, container, false);
+        View contentView = inflater.inflate(R.layout.feed_content, container, false);
         mTitle = (TextView) contentView.findViewById(R.id.article_title);
         mAuthor = (TextView) contentView.findViewById(R.id.article_author);
         mContent = (TextView) contentView.findViewById(R.id.article_content);
         mPublishedDate = (TextView) contentView.findViewById(R.id.published_date);
         mEditedDate = (TextView) contentView.findViewById(R.id.edited_date);
         mFavorite = (CheckBox) contentView.findViewById(R.id.favorite);
+        mFeedImage = (ImageView) contentView.findViewById(R.id.feed_picture);
         mFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-        ContentValues values = new ContentValues();
-        values.put(TodayInTechContract.COLUMN_FAVORITE, (isChecked?1:0));
-        String where = TodayInTechContract.COLUMN_ID + "=?";
-        String[] whereArgs = new String[] { String.valueOf(mID) };
-        getActivity().getContentResolver().update(TodayInTechContract.RSS_FEED_URI,  values, where, whereArgs );
+                ContentValues values = new ContentValues();
+                values.put(TodayInTechContract.COLUMN_FAVORITE, (isChecked?1:0));
+                String where = TodayInTechContract.COLUMN_ID + "=?";
+                String[] whereArgs = new String[] { String.valueOf(mID) };
+                getActivity().getContentResolver().update(TodayInTechContract.RSS_FEED_URI,  values, where, whereArgs );
         }});
         getLoaderManager().initLoader(2, null, this);
 
@@ -133,6 +138,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle sa
         String content = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT));
         String publishedDate = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHED_DATE));
         String editedDate = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_UPDATED_DATE));
+        byte[] feedPictureUri = cursor.getBlob(cursor.getColumnIndex(TodayInTechContract.COLUMN_PICTURE));
         mArticleUrl = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_ARTICLE_LINK));
         int isFavorite = cursor.getInt(cursor.getColumnIndex(TodayInTechContract.COLUMN_FAVORITE));
 
@@ -151,16 +157,23 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle sa
         mAuthor.setText(Html.fromHtml(authorAndUri));
 
 
+        if (feedPictureUri != null) {
+            Bitmap bmp;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inMutable = true;
+            bmp = BitmapFactory.decodeByteArray(feedPictureUri, 0, feedPictureUri.length, options);
+            mFeedImage.setImageBitmap(bmp);
+        }
+
         // TODO: Fix this :
         // For some reason setMovementMethod is not working correctly - it should enable links embedded in HTML to be clickable to launch a website.
         // Commenting it out so we can just have the highlighting.
         //mContent.setMovementMethod(LinkMovementMethod.getInstance());
-            mContent.setLinksClickable(true);
-            URLImageParser p = new URLImageParser(mContent);
-            mContent.setText(Html.fromHtml(content, p, null));
+        mContent.setLinksClickable(true);
+        mContent.setText(Html.fromHtml(content));
 
-        mPublishedDate.setText(publishedDate);
-        mEditedDate.setText(editedDate);
+       // mPublishedDate.setText(publishedDate);
+     //   mEditedDate.setText(editedDate);
 
         mFavorite.setChecked((isFavorite==1)?true:false);
         }
@@ -174,6 +187,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle sa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.content, menu);
+        //((TodayInTechActivity)getActivity()).setT
     }
 
 

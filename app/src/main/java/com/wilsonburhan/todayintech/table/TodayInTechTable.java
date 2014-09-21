@@ -14,8 +14,12 @@ import com.wilsonburhan.todayintech.base.BaseTable;
 public class TodayInTechTable extends BaseTable {
 
     @Override
-    public long insert(SQLiteDatabase db, Uri uri, ContentValues values) {
+    public int update(SQLiteDatabase db, Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        return super.update(db, uri, values, selection, selectionArgs);
+    }
 
+    @Override
+    public long insert(SQLiteDatabase db, Uri uri, ContentValues values) {
         String[] shortProjection = new String[] {
                 TodayInTechContract.COLUMN_ID,
                 TodayInTechContract.COLUMN_ARTICLE_ID,
@@ -66,7 +70,7 @@ public class TodayInTechTable extends BaseTable {
                 TodayInTechContract.COLUMN_AUTHOR_URI + " text, " +
                 TodayInTechContract.COLUMN_CONTENT + " text, " +
                 TodayInTechContract.COLUMN_FAVORITE + " integer default 0," +
-                TodayInTechContract.COLUMN_PICTURE_URI + " text" +
+                TodayInTechContract.COLUMN_PICTURE + " blob" +
                 ");";
         db.execSQL(sql);
 

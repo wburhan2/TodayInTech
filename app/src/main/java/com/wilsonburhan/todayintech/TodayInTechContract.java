@@ -18,7 +18,7 @@ public class TodayInTechContract {
     public static final String COLUMN_CONTENT = "content";			// Column for the Content for the article
     public static final String COLUMN_AUTHOR_NAME = "author_name"; 	// Column for the name of the author
     public static final String COLUMN_AUTHOR_URI = "author_uri";	// Column for the URI for the author
-    public static final String COLUMN_PICTURE_URI = "content_img";  // Column for the picture URI of the content.
+    public static final String COLUMN_PICTURE = "content_img";  // Column for the picture URI of the content.
     public static final String COLUMN_FAVORITE = "favorite";		// Column for saving favorite items
 
     // Default projection for the Table
@@ -32,7 +32,7 @@ public class TodayInTechContract {
             COLUMN_CONTENT,
             COLUMN_AUTHOR_NAME,
             COLUMN_AUTHOR_URI,
-            COLUMN_PICTURE_URI,
+            COLUMN_PICTURE,
             COLUMN_FAVORITE
     };
 

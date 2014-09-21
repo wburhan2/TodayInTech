@@ -31,6 +31,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/Black"
                 android:text="Loading Articles"
                 android:textAppearance="?android:attr/textAppearanceMedium" android:layout_marginLeft="10dp"/>
         </LinearLayout>
