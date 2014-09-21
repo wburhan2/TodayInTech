@@ -33,7 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class TodayInTechGetRss {
     private static URL mUrl = null;
-    private static final String RSS_FEED_URL = "http://www.huffingtonpost.com/feeds/verticals/technology/index.xml";
+    private static final String RSS_FEED_URL = "http://www.theverge.com/rss/index.xml";
     private static final String ATOM = "http://www.w3.org/2005/Atom";
     private static final String PURL = "http://purl.org/dc/elements/1.1/";
     private static final String ITUNES = "http://www.itunes.com/dtds/podcast-1.0.dtd";

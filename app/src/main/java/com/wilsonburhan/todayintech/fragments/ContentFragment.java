@@ -24,24 +24,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wilsonburhan.todayintech.R;
-import com.wilsonburhan.todayintech.TodayInTechActivity;
 import com.wilsonburhan.todayintech.TodayInTechContract;
-import com.wilsonburhan.todayintech.drawable.URLImageParser;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnCheckedChanged;
+import butterknife.Optional;
 
 /**
  * Created by Wilson on 9/20/2014.
  */
 public class ContentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-
-    private TextView mTitle;
-    private TextView mAuthor;
-    private TextView mContent;
-    private TextView mPublishedDate;
-    private TextView mEditedDate;
-    private CheckBox mFavorite;
+    @InjectView(R.id.article_title) TextView mTitle;
+    @InjectView(R.id.article_author) TextView mAuthor;
+    @InjectView(R.id.article_content) TextView mContent;
+    @InjectView(R.id.favorite) CheckBox mFavorite;
+    @InjectView(R.id.feed_picture) ImageView mFeedImage;
+    @Optional @InjectView(R.id.published_date) TextView mPublishedDate;
+    @Optional @InjectView(R.id.edited_date) TextView mEditedDate;
     private String mArticleUrl;
-    private ImageView mFeedImage;
+
 
     //public final String CURRENT_ARTICLE_ID = "current_article_id";
     private long mID = -1;
@@ -62,26 +65,21 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         }
 
         View contentView = inflater.inflate(R.layout.feed_content, container, false);
-        mTitle = (TextView) contentView.findViewById(R.id.article_title);
-        mAuthor = (TextView) contentView.findViewById(R.id.article_author);
-        mContent = (TextView) contentView.findViewById(R.id.article_content);
-        mPublishedDate = (TextView) contentView.findViewById(R.id.published_date);
-        mEditedDate = (TextView) contentView.findViewById(R.id.edited_date);
-        mFavorite = (CheckBox) contentView.findViewById(R.id.favorite);
-        mFeedImage = (ImageView) contentView.findViewById(R.id.feed_picture);
-        mFavorite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        ButterKnife.inject(this, contentView);
 
-                ContentValues values = new ContentValues();
-                values.put(TodayInTechContract.COLUMN_FAVORITE, (isChecked?1:0));
-                String where = TodayInTechContract.COLUMN_ID + "=?";
-                String[] whereArgs = new String[] { String.valueOf(mID) };
-                getActivity().getContentResolver().update(TodayInTechContract.RSS_FEED_URI,  values, where, whereArgs );
-        }});
         getLoaderManager().initLoader(2, null, this);
 
         return contentView;
+    }
+
+    @OnCheckedChanged(R.id.favorite)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        ContentValues values = new ContentValues();
+        values.put(TodayInTechContract.COLUMN_FAVORITE, (isChecked?1:0));
+        String where = TodayInTechContract.COLUMN_ID + "=?";
+        String[] whereArgs = new String[] { String.valueOf(mID) };
+        getActivity().getContentResolver().update(TodayInTechContract.RSS_FEED_URI,  values, where, whereArgs );
     }
 
     @Override

@@ -26,12 +26,15 @@ import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 import com.wilsonburhan.todayintech.adapters.NewsListAdapter;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class NewsList extends Fragment implements LoaderCallbacks<Cursor>, OnItemClickListener {
 
     OnArticleSelectedListener mSelectedArticleCallback;
     OnRefreshArticlesListener mRefreshArticlesListener;
     private NewsListAdapter mAdapter;
-    private ListView mListView;
+    @InjectView(R.id.news_list) ListView mListView;
 
     public interface OnArticleSelectedListener {
         public void onArticleSelected(long _id);
@@ -78,7 +81,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View contentView = inflater.inflate(R.layout.news_list, container, false);
-        mListView = (ListView) contentView.findViewById(R.id.news_list);
+        ButterKnife.inject(this, contentView);
 
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(contentView.findViewById(R.id.empty_view));

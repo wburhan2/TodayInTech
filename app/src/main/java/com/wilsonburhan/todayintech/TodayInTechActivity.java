@@ -14,8 +14,6 @@ import butterknife.InjectView;
 
 public class TodayInTechActivity extends FragmentActivity implements NewsList.OnArticleSelectedListener, NewsList.OnRefreshArticlesListener{
 
-    @InjectView(R.id.fragment_container)FrameLayout mMainContainer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
