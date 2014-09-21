@@ -38,7 +38,7 @@ public class TodayInTechService extends IntentService {
             // by the PK _ID of the table, so even if the list is refreshing in the background
             // Their favorite lists are still visible while it updates. The only thing probably
             // missing is an indeterminant progress bar.
-           // getContentResolver().notifyChange(TodayInTechContract.RSS_FEED_URI, null);
+            getContentResolver().notifyChange(TodayInTechContract.RSS_FEED_URI, null);
         }
         // Clear out ALL the saved stories
         else if(action.equals(TodayInTechContract.ACTION_CLEAR_ALL)) {
