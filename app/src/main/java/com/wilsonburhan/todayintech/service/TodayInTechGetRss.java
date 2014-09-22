@@ -33,7 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class TodayInTechGetRss {
     private static URL mUrl = null;
-    private static final String RSS_FEED_URL = "http://www.theverge.com/rss/index.xml";
+    private static final String RSS_FEED_URL = "http://www.huffingtonpost.com/feeds/verticals/technology/index.xml";
     private static final String ATOM = "http://www.w3.org/2005/Atom";
     private static final String PURL = "http://purl.org/dc/elements/1.1/";
     private static final String ITUNES = "http://www.itunes.com/dtds/podcast-1.0.dtd";
@@ -65,12 +65,22 @@ public class TodayInTechGetRss {
     private static void rssParser(InputStream stream, final ValueList items, ContentResolver resolver) throws IOException, SAXException{
         RootElement root = new RootElement("rss");
         android.sax.Element channel = root.getChild("channel");
+        final String[] publisher = {""};
         // End of each entry add the entire row, and create a new row.
         channel.getChild("item").setEndElementListener(new EndElementListener() {
             @Override
             public void end() {
+                items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHER, publisher[0]);
                 items.rows.add(items.currentRow);
                 items.currentRow = new ContentValues();
+            }
+        });
+
+        // Add the article publisher
+        channel.getChild("title").setEndTextElementListener(new EndTextElementListener() {
+            @Override
+            public void end(String body) {
+                publisher[0] =  body;
             }
         });
 
@@ -83,10 +93,10 @@ public class TodayInTechGetRss {
         });
 
         // Get the link to the article
-        channel.getChild("item").getChild("link").setStartElementListener(new StartElementListener() {
+        channel.getChild("item").getChild("link").setEndTextElementListener(new EndTextElementListener() {
             @Override
-            public void start(Attributes attributes) {
-                items.currentRow.put(TodayInTechContract.COLUMN_ARTICLE_LINK, attributes.getValue("href"));
+            public void end(String body) {
+                items.currentRow.put(TodayInTechContract.COLUMN_ARTICLE_LINK, body);
             }
         });
 
@@ -148,13 +158,21 @@ public class TodayInTechGetRss {
 
     private static void atomParser(InputStream stream, final ValueList items, ContentResolver resolver) throws IOException, SAXException{
         RootElement root = new RootElement(ATOM, "feed");
-
+        final String[] publisher = {""};
         // End of each entry add the entire row, and create a new row.
         root.getChild(ATOM, "entry").setEndElementListener(new EndElementListener() {
             @Override
             public void end() {
+                items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHER, publisher[0]);
                 items.rows.add(items.currentRow);
                 items.currentRow = new ContentValues();
+            }
+        });
+
+        root.getChild(ATOM, "title").setEndTextElementListener(new EndTextElementListener() {
+            @Override
+            public void end(String body) {
+                publisher[0] = body;
             }
         });
 

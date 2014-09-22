@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import com.wilsonburhan.todayintech.TodayInTechContract;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 import butterknife.Optional;
 
 /**
@@ -36,6 +39,7 @@ import butterknife.Optional;
  */
 public class ContentFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private TextView mArticleHeader;
     @InjectView(R.id.article_title) TextView mTitle;
     @InjectView(R.id.article_author) TextView mAuthor;
     @InjectView(R.id.article_content) TextView mContent;
@@ -67,6 +71,9 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         View contentView = inflater.inflate(R.layout.feed_content, container, false);
         ButterKnife.inject(this, contentView);
 
+        View actionBarView = inflater.inflate(R.layout.custom_action_bar, container, false);
+        mArticleHeader = (TextView) actionBarView.findViewById(R.id.article_header);
+        //getActivity().getActionBar().setCustomView(actionBarView);
         getLoaderManager().initLoader(2, null, this);
 
         return contentView;
@@ -131,6 +138,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         cursor.moveToFirst();
         if (cursor.getCount() == 1) {
         String title = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_TITLE));
+        String publisher = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHER));
         String author = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_AUTHOR_NAME));
         String authorUri = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_AUTHOR_URI));
         String content = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT));
@@ -142,7 +150,8 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
 
         String authorAndUri = "<a href=\"" + authorUri + "\">" + author + "</a>";
         mTitle.setText(title);
-
+        mArticleHeader.setText(publisher);
+        getActivity().setTitle(publisher);
         mPublishedDate.setText(publishedDate);
         editedDate = getActivity().getString(R.string.edited) + editedDate;
 
@@ -152,7 +161,6 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         //mAuthor.setMovementMethod(LinkMovementMethod.getInstance());
         mAuthor.setLinksClickable(true);
         mAuthor.setText(Html.fromHtml(authorAndUri));
-
 
         if (feedPictureUri != null) {
             Bitmap bmp;
@@ -165,7 +173,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         // TODO: Fix this :
         // For some reason setMovementMethod is not working correctly - it should enable links embedded in HTML to be clickable to launch a website.
         // Commenting it out so we can just have the highlighting.
-        //mContent.setMovementMethod(LinkMovementMethod.getInstance());
+        mContent.setMovementMethod(LinkMovementMethod.getInstance());
         mContent.setLinksClickable(true);
         mContent.setText(Html.fromHtml(content));
 
@@ -173,6 +181,14 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
      //   mEditedDate.setText(editedDate);
 
         mFavorite.setChecked((isFavorite==1)?true:false);
+        }
+    }
+
+    @OnClick({ R.id.feed_picture, R.id.article_title })
+    public void onClick(View v) {
+        if (!mArticleUrl.equals("")) {
+            Intent internetIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mArticleUrl));
+            startActivity(internetIntent);
         }
     }
 
@@ -184,7 +200,6 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.content, menu);
-        //((TodayInTechActivity)getActivity()).setT
     }
 
 
@@ -206,7 +221,6 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     public long getCurrentId() {
         return mID;

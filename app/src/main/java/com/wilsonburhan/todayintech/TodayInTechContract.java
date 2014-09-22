@@ -13,6 +13,7 @@ public class TodayInTechContract {
     public static final String COLUMN_TITLE = "title";				// Colmun for the title
     public static final String COLUMN_ARTICLE_ID = "article_id";	// Column for the article ID
     public static final String COLUMN_ARTICLE_LINK = "link";		// Column for the link to the article -- Missing from spec, but in XML feed
+    public static final String COLUMN_PUBLISHER = "publisher";      // Columns for the article publisher
     public static final String COLUMN_PUBLISHED_DATE = "published";	// Column for the time the article was published
     public static final String COLUMN_UPDATED_DATE = "updated"; 	// Column for the time the article was last updated
     public static final String COLUMN_CONTENT = "content";			// Column for the Content for the article
@@ -27,6 +28,7 @@ public class TodayInTechContract {
             COLUMN_TITLE,
             COLUMN_ARTICLE_ID,
             COLUMN_ARTICLE_LINK,
+            COLUMN_PUBLISHER,
             COLUMN_PUBLISHED_DATE,
             COLUMN_UPDATED_DATE,
             COLUMN_CONTENT,

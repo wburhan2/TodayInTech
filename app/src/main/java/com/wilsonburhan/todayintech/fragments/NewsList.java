@@ -131,9 +131,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
                 }
             }
         }
-
     }
-
 
     @Override
     public void onLoaderReset(Loader<Cursor> arg0) {
@@ -145,6 +143,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         if (menu.size() == 0) {
             inflater.inflate(R.menu.news, menu);
         }
+        getActivity().setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override
@@ -156,6 +155,4 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
