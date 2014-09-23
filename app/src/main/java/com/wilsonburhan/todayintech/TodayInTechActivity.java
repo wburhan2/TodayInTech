@@ -7,6 +7,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.wilsonburhan.todayintech.fragments.ContentFragment;
 import com.wilsonburhan.todayintech.fragments.NewsList;
 
@@ -18,6 +28,23 @@ public class TodayInTechActivity extends FragmentActivity implements NewsList.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_area);
+
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
+                .cacheOnDisk(true).resetViewBeforeLoading(true).build();
+
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
+                .threadPriority(Thread.NORM_PRIORITY - 2) // default
+                .tasksProcessingOrder(QueueProcessingType.FIFO) // default
+                .memoryCache(new LruMemoryCache(2 * 1024 * 1024))
+                .memoryCacheSize(2 * 1024 * 1024)
+                .diskCacheSize(100 * 1024 * 1024)
+                .diskCacheFileCount(100)
+                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
+                .defaultDisplayImageOptions(options)
+                .writeDebugLogs()
+                .build();
+        ImageLoader.getInstance().init(config);
 
         if (findViewById(R.id.fragment_container) != null) {
 

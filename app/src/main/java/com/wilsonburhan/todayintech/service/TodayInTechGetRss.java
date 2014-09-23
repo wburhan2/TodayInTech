@@ -33,6 +33,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class TodayInTechGetRss {
     private static URL mUrl = null;
+    private static final String[] RSS_FEED_URLS = { "http://www.huffingtonpost.com/feeds/verticals/technology/index.xml", "http://www.theverge.com/hd-home/rss/index.xml" };
     private static final String RSS_FEED_URL = "http://www.huffingtonpost.com/feeds/verticals/technology/index.xml";
     private static final String ATOM = "http://www.w3.org/2005/Atom";
     private static final String PURL = "http://purl.org/dc/elements/1.1/";
@@ -50,16 +51,18 @@ public class TodayInTechGetRss {
     }
 
     private static void getXML(ContentResolver resolver) throws IOException, SAXException {
-        mUrl = new URL(RSS_FEED_URL);
-        final ValueList items = new ValueList();
-        InputStream stream = (InputStream) mUrl.getContent();
+        for(String urls : RSS_FEED_URLS) {
+            mUrl = new URL(urls);
+            final ValueList items = new ValueList();
+            InputStream stream = (InputStream) mUrl.getContent();
 
-        String rootName = getRootNode(stream);
+            String rootName = getRootNode(stream);
 
-        if (rootName.equals(FEED))
-            atomParser(stream, items, resolver);
-        else if (rootName.equals(RSS))
-            rssParser(stream, items, resolver);
+            if (rootName.equals(FEED))
+                atomParser(stream, items, resolver);
+            else if (rootName.equals(RSS))
+                rssParser(stream, items, resolver);
+        }
     }
 
     private static void rssParser(InputStream stream, final ValueList items, ContentResolver resolver) throws IOException, SAXException{
@@ -134,10 +137,7 @@ public class TodayInTechGetRss {
                 org.jsoup.nodes.Document doc = Jsoup.parse(body);
                 Element png = doc.select("img").first();
                 if (png != null) {
-                    Bitmap pic = getBitmapFromURL(png.absUrl("src"));
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    pic.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                    items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, bos.toByteArray());
+                    items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
                     items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
                 }
                 else {
@@ -227,6 +227,15 @@ public class TodayInTechGetRss {
 
         });
 
+        // Add the Author Name
+        root.getChild(ATOM, "entry").getChild(ATOM, "author").getChild(ATOM, "uri").setEndTextElementListener(new EndTextElementListener() {
+            @Override
+            public void end(String body) {
+                items.currentRow.put(TodayInTechContract.COLUMN_AUTHOR_URI, body);
+            }
+
+        });
+
         // Add the Content
         root.getChild(ATOM, "entry").getChild(ATOM, "content").setEndTextElementListener(new EndTextElementListener() {
             @Override
@@ -234,10 +243,7 @@ public class TodayInTechGetRss {
                 org.jsoup.nodes.Document doc = Jsoup.parse(body);
                 Element png = doc.select("img").first();
                 if (png != null) {
-                    Bitmap pic = getBitmapFromURL(png.absUrl("src"));
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    pic.compress(Bitmap.CompressFormat.PNG, 100, bos);
-                    items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, bos.toByteArray());
+                    items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
                     items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
                 }
                 else {
@@ -254,24 +260,6 @@ public class TodayInTechGetRss {
        	 */
         Xml.parse(mUrl.openStream(), Xml.Encoding.UTF_8, root.getContentHandler());
         resolver.bulkInsert(TodayInTechContract.RSS_FEED_URI, items.getRows());
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src", src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
     }
 
     private static String getRootNode(InputStream stream) {

@@ -25,6 +25,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 
@@ -65,7 +67,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         if (savedInstanceState != null) {
-        mID = savedInstanceState.getInt(TodayInTechContract.COLUMN_ID);
+        mID = savedInstanceState.getLong(TodayInTechContract.COLUMN_ID);
         }
 
         View contentView = inflater.inflate(R.layout.feed_content, container, false);
@@ -144,7 +146,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         String content = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT));
         String publishedDate = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHED_DATE));
         String editedDate = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_UPDATED_DATE));
-        byte[] feedPictureUri = cursor.getBlob(cursor.getColumnIndex(TodayInTechContract.COLUMN_PICTURE));
+        String feedPictureUri = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PICTURE));
         mArticleUrl = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_ARTICLE_LINK));
         int isFavorite = cursor.getInt(cursor.getColumnIndex(TodayInTechContract.COLUMN_FAVORITE));
 
@@ -158,16 +160,17 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         // TODO: Fix this :
         // For some reason setMovementMethod is not working correctly - it should enable links embedded in HTML to be clickable to launch a website.
         // Commenting it out so we can just have the highlighting.
-        //mAuthor.setMovementMethod(LinkMovementMethod.getInstance());
-        mAuthor.setLinksClickable(true);
-        mAuthor.setText(Html.fromHtml(authorAndUri));
+        mAuthor.setMovementMethod(LinkMovementMethod.getInstance());
+        if (authorUri != null) {
+            mAuthor.setLinksClickable(true);
+            mAuthor.setText(Html.fromHtml(authorAndUri));
+        }
+        else {
+            mAuthor.setText(author);
+        }
 
         if (feedPictureUri != null) {
-            Bitmap bmp;
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inMutable = true;
-            bmp = BitmapFactory.decodeByteArray(feedPictureUri, 0, feedPictureUri.length, options);
-            mFeedImage.setImageBitmap(bmp);
+            ImageLoader.getInstance().displayImage(feedPictureUri, mFeedImage);
         }
 
         // TODO: Fix this :

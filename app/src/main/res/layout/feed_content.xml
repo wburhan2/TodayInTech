@@ -40,8 +40,7 @@
                 android:layout_below="@+id/article_title"
                 android:padding="8dp"
                 android:textSize="16sp"
-                android:textColor="@color/Grey"
-                android:autoLink="web" />
+                android:textColor="@color/Grey"/>
             <CheckBox
                 android:id="@+id/favorite"
                 style="@style/star"
@@ -66,7 +65,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/article_date"
                 android:padding="8dp"
-                android:autoLink="web"
                 android:textSize="16sp" />
         </RelativeLayout>
     </LinearLayout>
