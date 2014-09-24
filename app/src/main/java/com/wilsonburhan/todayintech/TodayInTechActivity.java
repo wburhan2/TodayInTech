@@ -52,11 +52,11 @@ public class TodayInTechActivity extends FragmentActivity implements NewsList.On
                 return;
             }
 
-            NewsList smallScreenFragement = new NewsList();
-            smallScreenFragement.setArguments(getIntent().getExtras());
+            NewsList smallScreenFragment = new NewsList();
+            smallScreenFragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.fragment_container, smallScreenFragement)
+                    .add(R.id.fragment_container, smallScreenFragment)
                     .commit();
         }
 

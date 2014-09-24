@@ -20,8 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
+import com.twotoasters.jazzylistview.JazzyListView;
 import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 import com.wilsonburhan.todayintech.adapters.NewsListAdapter;
@@ -34,7 +34,7 @@ public class NewsList extends Fragment implements LoaderCallbacks<Cursor>, OnIte
     OnArticleSelectedListener mSelectedArticleCallback;
     OnRefreshArticlesListener mRefreshArticlesListener;
     private NewsListAdapter mAdapter;
-    @InjectView(R.id.news_list) ListView mListView;
+    @InjectView(R.id.news_list) JazzyListView mListView;
 
     public interface OnArticleSelectedListener {
         public void onArticleSelected(long _id);

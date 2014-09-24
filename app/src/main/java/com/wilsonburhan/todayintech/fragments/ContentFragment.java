@@ -48,7 +48,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
     @InjectView(R.id.favorite) CheckBox mFavorite;
     @InjectView(R.id.feed_picture) ImageView mFeedImage;
     @InjectView(R.id.article_date) TextView mPublishedDate;
-    @Optional @InjectView(R.id.edited_date) TextView mEditedDate;
+    //@Optional @InjectView(R.id.edited_date) TextView mEditedDate;
     private String mArticleUrl;
 
 
@@ -169,9 +169,8 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
             mAuthor.setText(author);
         }
 
-        if (feedPictureUri != null) {
+        if (feedPictureUri != null)
             ImageLoader.getInstance().displayImage(feedPictureUri, mFeedImage);
-        }
 
         // TODO: Fix this :
         // For some reason setMovementMethod is not working correctly - it should enable links embedded in HTML to be clickable to launch a website.
