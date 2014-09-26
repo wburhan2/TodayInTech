@@ -33,13 +33,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class TodayInTechGetRss {
     private static URL mUrl = null;
-    private static final String[] RSS_FEED_URLS = { "http://www.huffingtonpost.com/feeds/verticals/technology/index.xml", "http://www.theverge.com/hd-home/rss/index.xml" };
-    private static final String RSS_FEED_URL = "http://www.huffingtonpost.com/feeds/verticals/technology/index.xml";
+    private static final String[] RSS_FEED_URLS = { "http://gizmodo.com/rss/vip", "http://www.cnet.com/rss/news/", "http://www.theverge.com/rss/index.xml" };
     private static final String ATOM = "http://www.w3.org/2005/Atom";
-    private static final String PURL = "http://purl.org/dc/elements/1.1/";
+    private static final String PURL = "http://purl.org/rss/1.0/modules/content/";
     private static final String ITUNES = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+    private static final String MEDIA = "http://search.yahoo.com/mrss/";
     private static final String FEED = "feed";
     private static final String RSS = "rss";
+    private static String mNamespace;
 
 
     public static void get(ContentResolver contentResolver) {
@@ -130,21 +131,54 @@ public class TodayInTechGetRss {
 
         });
 
-        // Add the Content
-        channel.getChild("item").getChild("description").setEndTextElementListener(new EndTextElementListener() {
-            @Override
-            public void end(String body) {
-                org.jsoup.nodes.Document doc = Jsoup.parse(body);
-                Element png = doc.select("img").first();
-                if (png != null) {
-                    items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
-                    items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+        if (mNamespace.equals(PURL)) {
+            // Add the Content
+            channel.getChild("item").getChild(PURL, "encoded").setEndTextElementListener(new EndTextElementListener() {
+                @Override
+                public void end(String body) {
+                    org.jsoup.nodes.Document doc = Jsoup.parse(body);
+                    Element png = doc.select("img").first();
+                    if (png != null) {
+                        items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
+                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+                    } else {
+                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
+                    }
                 }
-                else {
-                    items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
-                }
-            }
 
+            });
+
+            channel.getChild("item").getChild("description").setEndTextElementListener(new EndTextElementListener() {
+                @Override
+                public void end(String body) {
+                    items.currentRow.put(TodayInTechContract.COLUMN_SUMMARY, body);
+                }
+            });
+        }
+
+        else {
+            // Add the Content
+            channel.getChild("item").getChild("description").setEndTextElementListener(new EndTextElementListener() {
+                @Override
+                public void end(String body) {
+                    org.jsoup.nodes.Document doc = Jsoup.parse(body);
+                    Element png = doc.select("img").first();
+                    if (png != null) {
+                        items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
+                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+                    } else {
+                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
+                    }
+                }
+
+            });
+        }
+
+        channel.getChild("item").getChild(MEDIA, "thumbnail").setStartElementListener(new StartElementListener() {
+            @Override
+            public void start(Attributes attributes) {
+                items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, attributes.getValue("url"));
+            }
         });
 
        	/*
@@ -267,7 +301,7 @@ public class TodayInTechGetRss {
         try {
             DocumentBuilderFactory fact = DocumentBuilderFactory.newInstance();
             fact.setValidating(false);
-            fact.setNamespaceAware(false);
+            fact.setNamespaceAware(true);
             DocumentBuilder builder = fact.newDocumentBuilder();
             doc = builder.parse(stream);
         } catch (Exception e) {
@@ -276,6 +310,7 @@ public class TodayInTechGetRss {
             return null;
         }
         Node node = doc.getDocumentElement();
+        mNamespace = node.getAttributes().item(0).getNodeValue();
         return node.getNodeName();
     }
 }

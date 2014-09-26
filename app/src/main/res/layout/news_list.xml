@@ -10,7 +10,7 @@
         android:id="@+id/news_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:effect="cards"
+        app:effect="tilt"
         android:divider="@null"
         app:only_animate_new_items="false"
         app:only_animate_fling="false"

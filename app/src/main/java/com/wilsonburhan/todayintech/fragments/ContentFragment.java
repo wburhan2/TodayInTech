@@ -50,6 +50,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
     @InjectView(R.id.article_date) TextView mPublishedDate;
     //@Optional @InjectView(R.id.edited_date) TextView mEditedDate;
     private String mArticleUrl;
+    private String mPublisher;
 
 
     //public final String CURRENT_ARTICLE_ID = "current_article_id";
@@ -140,7 +141,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         cursor.moveToFirst();
         if (cursor.getCount() == 1) {
         String title = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_TITLE));
-        String publisher = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHER));
+        mPublisher = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHER));
         String author = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_AUTHOR_NAME));
         String authorUri = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_AUTHOR_URI));
         String content = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT));
@@ -152,8 +153,8 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
 
         String authorAndUri = "<a href=\"" + authorUri + "\">" + author + "</a>";
         mTitle.setText(title);
-        mArticleHeader.setText(publisher);
-        getActivity().setTitle(publisher);
+        mArticleHeader.setText(mPublisher);
+        getActivity().setTitle(mPublisher);
         mPublishedDate.setText(publishedDate);
         editedDate = getActivity().getString(R.string.edited) + editedDate;
 
@@ -215,7 +216,7 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_SUBJECT, "" + mTitle.getText());
             intent.putExtra(Intent.EXTRA_TEXT,
-            Html.fromHtml(getString(R.string.wanted_to_share) + ": "+ "\n<br> <a href=\""  + mArticleUrl + "\">Link to theVerge Post Article</a> <br><br>\n\n" + mContent.getText()));
+            Html.fromHtml(getString(R.string.wanted_to_share) + ": "+ "\n<br> <a href=\""  + mArticleUrl + "\">Link to " + mPublisher+ " Post Article</a> <br><br>\n\n" + mContent.getText()));
 
             startActivity(Intent.createChooser(intent,
                 getString(R.string.menu_share)));

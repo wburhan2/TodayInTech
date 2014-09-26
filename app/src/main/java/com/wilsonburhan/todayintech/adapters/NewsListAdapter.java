@@ -32,9 +32,11 @@ public class NewsListAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView articleTitle = (TextView) view.getTag(R.id.article_title);
         TextView articleSummary = (TextView) view.getTag(R.id.article_summary);
-        ImageView imageView = (ImageView) view.findViewById(R.id.feed_menu_pic);
-        TextView articlePublisher = (TextView) view.findViewById(R.id.article_publisher);
-        TextView articleLastUpdate = (TextView) view.findViewById(R.id.last_update);
+        ImageView imageView = (ImageView) view.getTag(R.id.feed_menu_pic);
+        TextView articlePublisher = (TextView) view.getTag(R.id.article_publisher);
+        TextView articleLastUpdate = (TextView) view.getTag(R.id.last_update);
+
+        String summary = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_SUMMARY));
 
         String publishedDate = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHED_DATE));
         String imageUri = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PICTURE));
@@ -43,7 +45,10 @@ public class NewsListAdapter extends CursorAdapter {
         else
             imageView.setImageDrawable(null);
         articleTitle.setText(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_TITLE)));
-        articleSummary.setText(Html.fromHtml(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT))));
+        if (summary == null)
+            articleSummary.setText(Html.fromHtml(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT))));
+        else
+            articleSummary.setText(Html.fromHtml(summary));
         articlePublisher.setText(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHER)));
         articleLastUpdate.setText(getLastUpdateDate(publishedDate));
     }
@@ -54,6 +59,9 @@ public class NewsListAdapter extends CursorAdapter {
         View view = inflater.inflate(R.layout.news_feed, null);
         view.setTag(R.id.article_title, view.findViewById(R.id.article_title));
         view.setTag(R.id.article_summary, view.findViewById(R.id.article_summary));
+        view.setTag(R.id.feed_menu_pic, view.findViewById(R.id.feed_menu_pic));
+        view.setTag(R.id.article_publisher, view.findViewById(R.id.article_publisher));
+        view.setTag(R.id.last_update, view.findViewById(R.id.last_update));
         return view;
     }
 

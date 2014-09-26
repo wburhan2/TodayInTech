@@ -61,6 +61,7 @@ public class TodayInTechTable extends BaseTable {
                 TodayInTechContract.COLUMN_TITLE + " text, " +
                 TodayInTechContract.COLUMN_ARTICLE_ID + " text, " +
                 TodayInTechContract.COLUMN_ARTICLE_LINK + " text, " +
+                TodayInTechContract.COLUMN_SUMMARY + " text, " +
                 TodayInTechContract.COLUMN_PUBLISHER + " text, " +
                 TodayInTechContract.COLUMN_PUBLISHED_DATE + " text, " +
                 TodayInTechContract.COLUMN_UPDATED_DATE + " text, " +
