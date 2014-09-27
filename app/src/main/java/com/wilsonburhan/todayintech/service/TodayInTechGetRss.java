@@ -54,26 +54,19 @@ public class TodayInTechGetRss {
     }
 
     private static void getXML(ContentResolver resolver) throws IOException, SAXException {
+        for (TodayInTechContract.Source source : TodayInTechContract.SOURCES) {
+            if (source.isActive() == false)
+                continue;
+            mUrl = new URL(source.getUrl());
+            final ValueList items = new ValueList();
+            InputStream stream = (InputStream) mUrl.getContent();
 
-        Iterator<Map.Entry<String, Map<String, Boolean>>> iterator = TodayInTechContract.SOURCES.entrySet().iterator();
-        while(iterator.hasNext()) {
-            Map.Entry<String, Map<String, Boolean>> mapEntry = iterator.next();
-            final Iterator<Map.Entry<String, Boolean>> checkIterator = mapEntry.getValue().entrySet().iterator();
-            while (checkIterator.hasNext()) {
-                final Map.Entry<String, Boolean> urls= checkIterator.next();
-                if (urls.getValue() == false)
-                    continue;
-                mUrl = new URL(urls.getKey());
-                final ValueList items = new ValueList();
-                InputStream stream = (InputStream) mUrl.getContent();
+            String rootName = getRootNode(stream);
 
-                String rootName = getRootNode(stream);
-
-                if (rootName.equals(FEED))
-                    atomParser(stream, items, resolver);
-                else if (rootName.equals(RSS))
-                    rssParser(stream, items, resolver);
-            }
+            if (rootName.equals(FEED))
+                atomParser(stream, items, resolver);
+            else if (rootName.equals(RSS))
+                rssParser(stream, items, resolver);
         }
     }
 
