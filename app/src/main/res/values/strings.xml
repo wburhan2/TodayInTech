@@ -9,5 +9,6 @@
     <string name="wanted_to_share">Share this Article</string>
     <string name="edited">Edited: </string>
     <string name="published">Published: </string>
-
+    <string name="ok">OK</string>
+    <string name="info">There are only 3 sources at the moment and I am planning to add more in the coming future.\n\nThe three sources are:\n- The Verge\n- CNET\n- Gizmodo\n\nIf you don\'t want to view the feeds from a specific source, you can untick them from the setting.\nAnd also, please be aware that I made this app to gauge where my Android skill levels are and to showcase this app to my potential employer.\n\nFinally, but not least.. Any advise to make the app even better is always welcome! :) </string>
 </resources>

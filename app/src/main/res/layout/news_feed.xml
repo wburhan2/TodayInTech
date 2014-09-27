@@ -50,6 +50,7 @@
                 android:layout_below="@+id/article_title"
                 android:ellipsize="end"
                 android:maxLines="4"
+                android:autoLink="none"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="2dp"

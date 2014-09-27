@@ -4,7 +4,6 @@
     android:installLocation="auto">
 
     <uses-sdk android:minSdkVersion="11"/>
-
     <!-- Include following permission if you load images from Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Include following permission if you want to cache images on SD card -->
@@ -22,22 +21,22 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".TodayInTechSettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"/>
         <provider android:name="com.wilsonburhan.todayintech.provider.TodayInTechProvider"
             android:authorities="com.wilsonburhan.todayintech" />
-
         <service android:name="com.wilsonburhan.todayintech.service.TodayInTechService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.wilsonburhan.todayintech.action.clear"/>
                 <action android:name="com.wilsonburhan.todayintech.action.clearall"/>
                 <action android:name="com.wilsonburhan.todayintech.action.get"/>
-
             </intent-filter>
         </service>
     </application>
-
 </manifest>

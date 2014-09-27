@@ -2,6 +2,11 @@ package com.wilsonburhan.todayintech;
 
 import android.net.Uri;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by Wilson on 9/19/2014.
  */
@@ -39,6 +44,12 @@ public class TodayInTechContract {
             COLUMN_PICTURE,
             COLUMN_FAVORITE
     };
+
+    public static Map<String, Map<String, Boolean>> SOURCES = new HashMap<String, Map<String, Boolean>>() {{
+        put("Gizmodo", new HashMap<String, Boolean>(){{put("http://gizmodo.com/rss/vip", true);}});
+        put("CNET News", new HashMap<String, Boolean>(){{put("http://www.cnet.com/rss/news", true);}});
+        put("The Verge - All Posts", new HashMap<String, Boolean>(){{put("http://www.theverge.com/rss/index.xml", true);}});
+    }};
 
     // Intent Actions to perform on search results
     public static final String ACTION_CLEAR = "com.wilsonburhan.todayintech.action.clear";

@@ -72,7 +72,6 @@ private ContentObserver contentObserver = new ContentObserver(null) {
             }
         }
     }
-
 };
 
     /* (non-Javadoc)

@@ -76,7 +76,6 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
 
         View actionBarView = inflater.inflate(R.layout.custom_action_bar, container, false);
         mArticleHeader = (TextView) actionBarView.findViewById(R.id.article_header);
-        //getActivity().getActionBar().setCustomView(actionBarView);
         getLoaderManager().initLoader(2, null, this);
 
         return contentView;
@@ -197,7 +196,6 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        // TODO Auto-generated method stub
     }
 
     @Override

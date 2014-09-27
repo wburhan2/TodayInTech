@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -33,7 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  */
 public class TodayInTechGetRss {
     private static URL mUrl = null;
-    private static final String[] RSS_FEED_URLS = { "http://gizmodo.com/rss/vip", "http://www.cnet.com/rss/news/", "http://www.theverge.com/rss/index.xml" };
+    //private static final String[] RSS_FEED_URLS = { "http://gizmodo.com/rss/vip", "http://www.cnet.com/rss/news/", "http://www.theverge.com/rss/index.xml" };
     private static final String ATOM = "http://www.w3.org/2005/Atom";
     private static final String PURL = "http://purl.org/rss/1.0/modules/content/";
     private static final String ITUNES = "http://www.itunes.com/dtds/podcast-1.0.dtd";
@@ -52,17 +54,26 @@ public class TodayInTechGetRss {
     }
 
     private static void getXML(ContentResolver resolver) throws IOException, SAXException {
-        for(String urls : RSS_FEED_URLS) {
-            mUrl = new URL(urls);
-            final ValueList items = new ValueList();
-            InputStream stream = (InputStream) mUrl.getContent();
 
-            String rootName = getRootNode(stream);
+        Iterator<Map.Entry<String, Map<String, Boolean>>> iterator = TodayInTechContract.SOURCES.entrySet().iterator();
+        while(iterator.hasNext()) {
+            Map.Entry<String, Map<String, Boolean>> mapEntry = iterator.next();
+            final Iterator<Map.Entry<String, Boolean>> checkIterator = mapEntry.getValue().entrySet().iterator();
+            while (checkIterator.hasNext()) {
+                final Map.Entry<String, Boolean> urls= checkIterator.next();
+                if (urls.getValue() == false)
+                    continue;
+                mUrl = new URL(urls.getKey());
+                final ValueList items = new ValueList();
+                InputStream stream = (InputStream) mUrl.getContent();
 
-            if (rootName.equals(FEED))
-                atomParser(stream, items, resolver);
-            else if (rootName.equals(RSS))
-                rssParser(stream, items, resolver);
+                String rootName = getRootNode(stream);
+
+                if (rootName.equals(FEED))
+                    atomParser(stream, items, resolver);
+                else if (rootName.equals(RSS))
+                    rssParser(stream, items, resolver);
+            }
         }
     }
 
