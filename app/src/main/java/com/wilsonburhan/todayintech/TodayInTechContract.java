@@ -2,8 +2,11 @@ package com.wilsonburhan.todayintech;
 
 import android.net.Uri;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,14 +48,42 @@ public class TodayInTechContract {
             COLUMN_FAVORITE
     };
 
-    public static Map<String, Map<String, Boolean>> SOURCES = new HashMap<String, Map<String, Boolean>>() {{
-        put("Gizmodo", new HashMap<String, Boolean>(){{put("http://gizmodo.com/rss/vip", true);}});
-        put("CNET News", new HashMap<String, Boolean>(){{put("http://www.cnet.com/rss/news", true);}});
-        put("The Verge - All Posts", new HashMap<String, Boolean>(){{put("http://www.theverge.com/rss/index.xml", true);}});
-    }};
+    public static List<Source> SOURCES = new ArrayList<Source>(Arrays.asList(
+            new Source("Gizmodo","http://gizmodo.com/rss/vip", true),
+            new Source("CNET News","http://www.cnet.com/rss/news", true),
+            new Source("The Verge - All Posts","http://www.theverge.com/rss/index.xml", true)
+    ));
 
     // Intent Actions to perform on search results
     public static final String ACTION_CLEAR = "com.wilsonburhan.todayintech.action.clear";
     public static final String ACTION_CLEAR_ALL = "com.wilsonburhan.todayintech.action.clear";
     public static final String ACTION_GET = "com.wilsonburhan.todayintech.action.get";
+
+    public static class Source {
+        public String mTitle;
+        public String mUrl;
+        public Boolean mActive;
+
+        public Source(String the_title, String the_url, Boolean isActive){
+            mTitle = the_title;
+            mUrl = the_url;
+            mActive = isActive;
+        }
+
+        public void setActive(Boolean isActive) {
+            mActive = isActive;
+        }
+
+        public String getTitle(){
+            return mTitle;
+        }
+
+        public String getUrl(){
+            return mUrl;
+        }
+
+        public Boolean isActive(){
+            return mActive;
+        }
+    }
 }

@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class TodayInTechSettingActivity extends FragmentActivity {
 
-    private final int MANAGE_SOURCES = 0;
+    private final int MANAGE_SOURCES = 1;
     private final int FEEDBACK = 2;
     private final int INFO = 3;
     ListView mListView;
@@ -42,11 +42,11 @@ public class TodayInTechSettingActivity extends FragmentActivity {
     private void setListView(){
         List<Map<String, String>> settingList = new ArrayList<Map<String, String>>();
         Map<String,String> content = new HashMap<String, String>();
-        content.put("title","Manage sources");
-        settingList.add(content);
-        content = new HashMap<String, String>();
         content.put("title", "About");
         content.put("sub","Written by Wilson Burhan");
+        settingList.add(content);
+        content = new HashMap<String, String>();
+        content.put("title","Manage sources");
         settingList.add(content);
         content = new HashMap<String, String>();
         content.put("title","Feedback");
