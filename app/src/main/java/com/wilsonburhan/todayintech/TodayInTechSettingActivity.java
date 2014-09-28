@@ -12,6 +12,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.wilsonburhan.todayintech.fragments.InfoDialogFragment;
+import com.wilsonburhan.todayintech.fragments.SourceDialogFragment;
 
 import org.apache.http.protocol.HTTP;
 
@@ -43,7 +44,7 @@ public class TodayInTechSettingActivity extends FragmentActivity {
         List<Map<String, String>> settingList = new ArrayList<Map<String, String>>();
         Map<String,String> content = new HashMap<String, String>();
         content.put("title", "About");
-        content.put("sub","Written by Wilson Burhan");
+        content.put("sub", "Written by Wilson Burhan");
         settingList.add(content);
         content = new HashMap<String, String>();
         content.put("title","Manage sources");
@@ -66,7 +67,9 @@ public class TodayInTechSettingActivity extends FragmentActivity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             switch (i){
                 case MANAGE_SOURCES:
-
+                    FragmentManager sourceFm = getSupportFragmentManager();
+                    SourceDialogFragment sourceFragment = new SourceDialogFragment();
+                    sourceFragment.show(sourceFm, "SourceFragment");
                     break;
                 case FEEDBACK:
                     Intent email = new Intent(Intent.ACTION_SENDTO);

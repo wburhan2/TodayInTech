@@ -68,7 +68,7 @@ public class TodayInTechTable extends BaseTable {
                 TodayInTechContract.COLUMN_AUTHOR_NAME + " text, " +
                 TodayInTechContract.COLUMN_AUTHOR_URI + " text, " +
                 TodayInTechContract.COLUMN_CONTENT + " text, " +
-                TodayInTechContract.COLUMN_FAVORITE + " integer default 0," +
+                TodayInTechContract.COLUMN_FAVORITE + " integer default 0, " +
                 TodayInTechContract.COLUMN_PICTURE + " text" +
                 ");";
 

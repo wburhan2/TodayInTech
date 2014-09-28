@@ -4,11 +4,7 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Wilson on 9/19/2014.
@@ -28,7 +24,7 @@ public class TodayInTechContract {
     public static final String COLUMN_CONTENT = "content";			// Column for the Content for the article
     public static final String COLUMN_AUTHOR_NAME = "author_name"; 	// Column for the name of the author
     public static final String COLUMN_AUTHOR_URI = "author_uri";	// Column for the URI for the author
-    public static final String COLUMN_PICTURE = "content_img";  // Column for the picture URI of the content.
+    public static final String COLUMN_PICTURE = "content_img";      // Column for the picture URI of the content.
     public static final String COLUMN_FAVORITE = "favorite";		// Column for saving favorite items
 
     // Default projection for the Table
