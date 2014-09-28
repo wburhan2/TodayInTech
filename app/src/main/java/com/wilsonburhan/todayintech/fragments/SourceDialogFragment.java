@@ -59,8 +59,7 @@ public class SourceDialogFragment extends DialogFragment{
                     }
                 }
                 getDialog().dismiss();
-
-                //TODO Apply Filter to the feeds
+                //TODO Call Refresh in NewsList
             }
         });
         mListView.setAdapter(myCustomAdapter);

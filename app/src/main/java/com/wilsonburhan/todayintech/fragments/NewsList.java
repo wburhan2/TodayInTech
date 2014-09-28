@@ -26,6 +26,9 @@ import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 import com.wilsonburhan.todayintech.adapters.NewsListAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -113,7 +116,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
                 getActivity(),
                 TodayInTechContract.RSS_FEED_URI,
                 TodayInTechContract.DEFAULT_PROJECTION,
-                null,
+                TodayInTechContract.COLUMN_PUBLISHER + " in (" + getActiveFeedsTitle() + ")",
                 null,
                 TodayInTechContract.COLUMN_PUBLISHED_DATE + " desc");
     }
@@ -150,8 +153,29 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
                 mRefreshArticlesListener.onRefreshArticles();
+                getLoaderManager().restartLoader(0, null, this);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private String getActiveFeedsTitle() {
+        List<String> urls = new ArrayList<String>();
+        for(TodayInTechContract.Source source : TodayInTechContract.SOURCES){
+            if (source.isActive())
+                urls.add(source.getTitle());
+        }
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (String url : urls){
+            sb.append("'");
+            sb.append(url);
+            sb.append("'");
+            if (count < urls.size()) {
+                sb.append(",");
+                count++;
+            }
+        }
+        return sb.toString();
     }
 }

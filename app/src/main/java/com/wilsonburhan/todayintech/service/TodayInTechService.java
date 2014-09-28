@@ -5,6 +5,9 @@ import android.content.Intent;
 
 import com.wilsonburhan.todayintech.TodayInTechContract;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Wilson on 9/20/2014.
  */

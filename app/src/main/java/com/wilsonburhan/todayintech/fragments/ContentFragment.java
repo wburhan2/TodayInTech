@@ -83,7 +83,6 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
 
     @OnCheckedChanged(R.id.favorite)
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
         ContentValues values = new ContentValues();
         values.put(TodayInTechContract.COLUMN_FAVORITE, (isChecked?1:0));
         String where = TodayInTechContract.COLUMN_ID + "=?";
