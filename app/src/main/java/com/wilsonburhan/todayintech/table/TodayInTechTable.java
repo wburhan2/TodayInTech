@@ -71,14 +71,14 @@ public class TodayInTechTable extends BaseTable {
                 TodayInTechContract.COLUMN_FAVORITE + " integer default 0, " +
                 TodayInTechContract.COLUMN_PICTURE + " text" +
                 "); ";
-        String trigger = "CREATE TRIGGER IF NOT EXIST delete_trigger AFTER INSERT ON "+ TABLE_NAME +
+        String trigger = "CREATE TRIGGER IF NOT EXISTS delete_trigger AFTER INSERT ON "+ TABLE_NAME +
                 " BEGIN" +
                 " DELETE FROM " + TABLE_NAME + " WHERE "+ TodayInTechContract.COLUMN_ID + " IN (" +
-                "SELECT " + TodayInTechContract.COLUMN_ID + " FROM " + TABLE_NAME + " ORDER BY " + TodayInTechContract.COLUMN_PUBLISHED_DATE + " DESC LIMIT 10);" +
+                "SELECT " + TodayInTechContract.COLUMN_ID + " FROM (SELECT (" + TodayInTechContract.COLUMN_ID + ") FROM " + TABLE_NAME +
+                " ORDER BY " + TodayInTechContract.COLUMN_PUBLISHED_DATE + " DESC LIMIT 10));" +
                 " END;";
 
-        String query = sql + trigger;
-        db.execSQL(query);
+        db.execSQL(sql);
         //db.execSQL(trigger);
     }
 

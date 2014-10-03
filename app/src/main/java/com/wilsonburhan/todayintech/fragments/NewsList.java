@@ -118,7 +118,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
                 TodayInTechContract.DEFAULT_PROJECTION,
                 TodayInTechContract.COLUMN_PUBLISHER + " in (" + getActiveFeedsTitle() + ")",
                 null,
-                TodayInTechContract.COLUMN_PUBLISHED_DATE + " desc");
+                TodayInTechContract.COLUMN_PUBLISHED_DATE + " desc limit 20");
     }
 
     @Override
