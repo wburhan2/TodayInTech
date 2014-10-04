@@ -27,7 +27,6 @@ public class TodayInTechService extends IntentService {
         // Clear out all the saved stories, other than the saved ones
 
         if(action.equals(TodayInTechContract.ACTION_CLEAR)) {
-            // TODO Maybe it works??
             String where = TodayInTechContract.COLUMN_FAVORITE + "=? AND " + TodayInTechContract.COLUMN_PUBLISHED_DATE  + "<?";
             String[] args = { "0", "date('now','-10 day')" };
             getContentResolver().delete(TodayInTechContract.RSS_FEED_URI, where, args);
