@@ -29,7 +29,7 @@ public class TodayInTechService extends IntentService {
         if(action.equals(TodayInTechContract.ACTION_CLEAR)) {
             String where = TodayInTechContract.COLUMN_FAVORITE + "=? AND " + TodayInTechContract.COLUMN_PUBLISHED_DATE  + "<?";
             String[] args = { "0", "date('now','-10 day')" };
-            getContentResolver().delete(TodayInTechContract.RSS_FEED_URI, where, args);
+           // getContentResolver().delete(TodayInTechContract.RSS_FEED_URI, where, args);
             // ** NOTE ** by calling this below, we clear the list view & cause it to show
             // the view for empty list. While it may be better to show the list w/out clearing
             // it for the user, there are other interactions which could hurt the experience.
@@ -41,7 +41,7 @@ public class TodayInTechService extends IntentService {
             // by the PK _ID of the table, so even if the list is refreshing in the background
             // Their favorite lists are still visible while it updates. The only thing probably
             // missing is an indeterminant progress bar.
-            getContentResolver().notifyChange(TodayInTechContract.RSS_FEED_URI, null);
+            //getContentResolver().notifyChange(TodayInTechContract.RSS_FEED_URI, null);
         }
         // Clear out ALL the saved stories
         else if(action.equals(TodayInTechContract.ACTION_CLEAR_ALL)) {

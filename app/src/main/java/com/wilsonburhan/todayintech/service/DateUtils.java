@@ -51,11 +51,11 @@ public class DateUtils{
                         "yyyy-MM-dd'T'HH:mm:ss",
                         "yyyy-MM-dd'T'HHmmss.SSSz",
                         "yyyy-MM-dd",
-                        "yyyy-MM-dd HH:mm:ss"
+                        "yyyy-MM-dd HH:mm:ss zzzz"
                 };
 
         dateFormats = new SimpleDateFormat[possibleDateFormats.length];
-        TimeZone gmtTZ = TimeZone.getTimeZone("GMT");
+        TimeZone gmtTZ = TimeZone.getTimeZone("PST");
 
         for (int i = 0; i < possibleDateFormats.length; i++)
         {

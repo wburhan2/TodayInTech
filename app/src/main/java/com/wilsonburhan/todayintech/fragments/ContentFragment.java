@@ -30,6 +30,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
@@ -153,6 +158,18 @@ public class ContentFragment extends Fragment implements LoaderManager.LoaderCal
         mTitle.setText(title);
         mArticleHeader.setText(mPublisher);
         getActivity().setTitle(mPublisher);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzzz");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        Date date = null;
+        try {
+            date = format.parse(publishedDate);
+            SimpleDateFormat destFormat = new SimpleDateFormat("MM/dd/yyyy  hh:mm a");
+            destFormat.setTimeZone(TimeZone.getDefault());
+            publishedDate = destFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         mPublishedDate.setText(publishedDate);
         editedDate = getActivity().getString(R.string.edited) + editedDate;
 

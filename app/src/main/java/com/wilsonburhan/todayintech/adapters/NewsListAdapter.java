@@ -66,7 +66,7 @@ public class NewsListAdapter extends CursorAdapter {
     }
 
     private String getLastUpdateDate(String date) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss zzzz");
         Date d1 = null;
         Date d2 = new Date();
         String time = "";
