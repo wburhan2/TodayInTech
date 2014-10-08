@@ -46,6 +46,7 @@ public class TodayInTechContract {
 
     public static List<Source> SOURCES = new ArrayList<Source>(Arrays.asList(
             new Source("Gizmodo","http://gizmodo.com/rss/vip", true),
+            new Source("Mashable","http://feeds.mashable.com/Mashable?format=xml", true),
             new Source("CNET News","http://www.cnet.com/rss/news", true),
             new Source("The Verge -  All Posts","http://www.theverge.com/rss/index.xml", true)
     ));

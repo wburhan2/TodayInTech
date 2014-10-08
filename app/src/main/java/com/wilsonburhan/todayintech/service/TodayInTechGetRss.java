@@ -31,6 +31,7 @@ public class TodayInTechGetRss {
     private static URL mUrl = null;
     private static final String ATOM = "http://www.w3.org/2005/Atom";
     private static final String PURL = "http://purl.org/rss/1.0/modules/content/";
+    private static final String DC = "http://purl.org/dc/elements/1.1/";
     private static final String ITUNES = "http://www.itunes.com/dtds/podcast-1.0.dtd";
     private static final String MEDIA = "http://search.yahoo.com/mrss/";
     private static final String FEED = "feed";
@@ -116,7 +117,6 @@ public class TodayInTechGetRss {
             public void end(String body) {
                 items.currentRow.put(TodayInTechContract.COLUMN_PUBLISHED_DATE, DateUtils.parseDate(body));
             }
-
         });
 
         // Add the Author Name
@@ -125,7 +125,13 @@ public class TodayInTechGetRss {
             public void end(String body) {
                 items.currentRow.put(TodayInTechContract.COLUMN_AUTHOR_NAME, body);
             }
+        });
 
+        channel.getChild("item").getChild(DC, "creator").setEndTextElementListener(new EndTextElementListener() {
+            @Override
+            public void end(String body) {
+                items.currentRow.put(TodayInTechContract.COLUMN_AUTHOR_NAME, body);
+            }
         });
 
         if (mNamespace.equals(PURL)) {
@@ -137,7 +143,7 @@ public class TodayInTechGetRss {
                     Element png = doc.select("img").first();
                     if (png != null) {
                         items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
-                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+?>", ""));
                     } else {
                         items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
                     }
@@ -162,12 +168,11 @@ public class TodayInTechGetRss {
                     Element png = doc.select("img").first();
                     if (png != null) {
                         items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
-                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+                        items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+?>", ""));
                     } else {
                         items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
                     }
                 }
-
             });
         }
 
@@ -275,7 +280,7 @@ public class TodayInTechGetRss {
                 Element png = doc.select("img").first();
                 if (png != null) {
                     items.currentRow.put(TodayInTechContract.COLUMN_PICTURE, png.absUrl("src"));
-                    items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+/(img)*>", ""));
+                    items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body.replaceAll("<img.+?>", ""));
                 }
                 else {
                     items.currentRow.put(TodayInTechContract.COLUMN_CONTENT, body);
