@@ -81,7 +81,6 @@ public class SourceDialogFragment extends DialogFragment{
 
                 SharedPreferences.Editor editor = settings.edit();
                 Gson gson = new Gson();
-                //String json = gson.toJson(RecipientArray);
                 for(int i = 0; i < sourceList.size(); i++) {
                     String json = gson.toJson(sourceList.get(i));
                     editor.putString(getResources().getString(R.string.list)+i, json);
