@@ -5,6 +5,8 @@ package com.wilsonburhan.todayintech.fragments;
  */
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.google.gson.Gson;
 import com.twotoasters.jazzylistview.JazzyListView;
 import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
@@ -161,7 +164,25 @@ private ContentObserver contentObserver = new ContentObserver(null) {
 
     private String getActiveFeedsTitle() {
         List<String> urls = new ArrayList<String>();
-        for(TodayInTechContract.Source source : TodayInTechContract.SOURCES){
+
+        SharedPreferences settings = getActivity().getSharedPreferences(TodayInTechContract.SOURCE_PREFERENCE, Context.MODE_PRIVATE);
+        String value = settings.getString(getResources().getString(R.string.list) + 0, null);
+
+        final List<TodayInTechContract.Source> sourceList;
+        if (value == null)
+            sourceList = TodayInTechContract.SOURCES;
+        else {
+            int size = TodayInTechContract.SOURCES.size();
+            sourceList = new ArrayList<TodayInTechContract.Source>();
+            for (int i = 0; i < size; i++) {
+                Gson gson = new Gson();
+                String json = settings.getString(getResources().getString(R.string.list)+i, "");
+                TodayInTechContract.Source s = gson.fromJson(json, TodayInTechContract.Source.class);
+                sourceList.add(s);
+            }
+        }
+
+        for(TodayInTechContract.Source source : sourceList){
             if (source.isActive())
                 urls.add(source.getTitle());
         }

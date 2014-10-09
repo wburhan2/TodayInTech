@@ -20,6 +20,7 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,16 +40,16 @@ public class TodayInTechGetRss {
     private static String mNamespace;
 
 
-    public static void get(ContentResolver contentResolver) {
+    public static void get(ContentResolver contentResolver, List<TodayInTechContract.Source> sourceList) {
         try {
-            getXML(contentResolver);
+            getXML(contentResolver, sourceList);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void getXML(ContentResolver resolver) throws IOException, SAXException {
-        for (TodayInTechContract.Source source : TodayInTechContract.SOURCES) {
+    private static void getXML(ContentResolver resolver, List<TodayInTechContract.Source> sourceList) throws IOException, SAXException {
+        for (TodayInTechContract.Source source : sourceList) {
             if (source.isActive() == false)
                 continue;
             mUrl = new URL(source.getUrl());

@@ -1,9 +1,16 @@
 package com.wilsonburhan.todayintech.service;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Wilson on 9/20/2014.
@@ -46,7 +53,22 @@ public class TodayInTechService extends IntentService {
         }
         // Get the latest stories
         else if(action.equals(TodayInTechContract.ACTION_GET)) {
-            TodayInTechGetRss.get(getContentResolver());
+            SharedPreferences settings = getSharedPreferences(TodayInTechContract.SOURCE_PREFERENCE, Context.MODE_PRIVATE);
+            String value = settings.getString(getResources().getString(R.string.list) + 0, null);
+            final List<TodayInTechContract.Source> sourceList;
+            if (value == null)
+                sourceList = TodayInTechContract.SOURCES;
+            else {
+                int size = TodayInTechContract.SOURCES.size();
+                sourceList = new ArrayList<TodayInTechContract.Source>();
+                for (int i = 0; i < size; i++) {
+                    Gson gson = new Gson();
+                    String json = settings.getString(getResources().getString(R.string.list)+i, "");
+                    TodayInTechContract.Source s = gson.fromJson(json, TodayInTechContract.Source.class);
+                    sourceList.add(s);
+                }
+            }
+            TodayInTechGetRss.get(getContentResolver(), sourceList);
             getContentResolver().notifyChange(TodayInTechContract.RSS_FEED_URI, null);
         }
     }

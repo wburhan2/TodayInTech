@@ -51,6 +51,8 @@ public class TodayInTechContract {
             new Source("The Verge -  All Posts","http://www.theverge.com/rss/index.xml", true)
     ));
 
+    public static final String SOURCE_PREFERENCE = "SourcePreference";
+
     // Intent Actions to perform on search results
     public static final String ACTION_CLEAR = "com.wilsonburhan.todayintech.action.clear";
     public static final String ACTION_CLEAR_ALL = "com.wilsonburhan.todayintech.action.clear";
