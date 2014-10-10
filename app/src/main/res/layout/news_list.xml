@@ -14,7 +14,8 @@
         android:divider="@null"
         app:only_animate_new_items="false"
         app:only_animate_fling="false"
-        app:max_velocity="0" />
+        app:max_velocity="0"
+        android:scrollbars="none"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
