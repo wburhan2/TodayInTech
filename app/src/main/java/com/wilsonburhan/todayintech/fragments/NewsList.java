@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.twotoasters.jazzylistview.JazzyListView;
@@ -41,6 +42,7 @@ public class NewsList extends Fragment implements LoaderCallbacks<Cursor>, OnIte
     OnRefreshArticlesListener mRefreshArticlesListener;
     private NewsListAdapter mAdapter;
     @InjectView(R.id.news_list) JazzyListView mListView;
+    @InjectView(R.id.top_button) TextView mTopButton;
 
     public interface OnArticleSelectedListener {
         public void onArticleSelected(long _id);
@@ -91,6 +93,13 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(contentView.findViewById(R.id.empty_view));
         mListView.setOnItemClickListener(this);
+
+        mTopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListView.smoothScrollToPosition(0);
+            }
+        });
 
         return contentView;
     }

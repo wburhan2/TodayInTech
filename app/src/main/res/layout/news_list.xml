@@ -41,7 +41,17 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/Black"
                 android:text="Loading Articles"
-                android:textAppearance="?android:attr/textAppearanceMedium" android:layout_marginLeft="10dp"/>
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_marginLeft="10dp"/>
         </LinearLayout>
     </RelativeLayout>
+    <TextView
+        android:id="@+id/top_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[top]"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_gravity="bottom|right"
+        android:textColor="@color/Grey"
+        android:clickable="true"/>
 </FrameLayout>
