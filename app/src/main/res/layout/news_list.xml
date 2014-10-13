@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         app:effect="tilt"
         android:divider="@null"
-        app:only_animate_new_items="false"
+        app:only_animate_new_items="true"
         app:only_animate_fling="false"
         app:max_velocity="0"
         android:scrollbars="none"/>
