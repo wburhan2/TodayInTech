@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:textSize="18sp"
+                android:textSize="@dimen/title_text_size"
                 android:textStyle="bold"
                 android:clickable="true"/>
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/article_title"
                 android:padding="8dp"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size"
                 android:textColor="@color/Grey"/>
             <CheckBox
                 android:id="@+id/favorite"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/article_author"
                 android:padding="8dp"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size"
                 android:textColor="@color/Black"/>
             <TextView
                 android:id="@+id/article_content"
@@ -66,7 +66,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/article_date"
                 android:padding="8dp"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size" />
         </RelativeLayout>
     </LinearLayout>
 </ScrollView>

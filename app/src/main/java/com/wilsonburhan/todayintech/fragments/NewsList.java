@@ -93,6 +93,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         mListView.setAdapter(mAdapter);
         mListView.setEmptyView(contentView.findViewById(R.id.empty_view));
         mListView.setOnItemClickListener(this);
+        mListView.setShouldOnlyAnimateNewItems(true);
 
         mTopButton.setOnClickListener(new View.OnClickListener() {
             @Override

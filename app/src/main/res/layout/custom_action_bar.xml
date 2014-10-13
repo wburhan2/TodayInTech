@@ -12,6 +12,5 @@
         android:layout_marginLeft="10dp"
         android:textSize="18dp"
         android:maxLines="1"
-        android:ellipsize="end"
-        android:text="haha"/>
+        android:ellipsize="end"/>
 </LinearLayout>
