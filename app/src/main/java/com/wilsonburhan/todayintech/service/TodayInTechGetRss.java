@@ -83,7 +83,11 @@ public class TodayInTechGetRss {
         channel.getChild("title").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
-                publisher[0] =  body;
+                //TODO Title for RSS
+                if(body.equals("Tech"))
+                    publisher[0] = "Mashable";
+                else
+                    publisher[0] =  body;
             }
         });
 
@@ -209,7 +213,11 @@ public class TodayInTechGetRss {
         root.getChild(ATOM, "title").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
-                publisher[0] = body;
+                //TODO Title for ATOM
+                if (body.equals("The Verge -  Home Posts"))
+                    publisher[0] = "The Verge";
+                else
+                    publisher[0] = body;
             }
         });
 
