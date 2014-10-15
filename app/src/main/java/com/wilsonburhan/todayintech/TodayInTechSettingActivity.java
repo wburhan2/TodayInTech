@@ -75,7 +75,7 @@ public class TodayInTechSettingActivity extends FragmentActivity {
                     Intent email = new Intent(Intent.ACTION_SENDTO);
                     email.setType(HTTP.PLAIN_TEXT_TYPE);
                     email.setData(Uri.parse("mailto:wilson.burhan@gmail.com"));
-                    email.putExtra(Intent.EXTRA_SUBJECT, "Spending Tracker Feedback");
+                    email.putExtra(Intent.EXTRA_SUBJECT, "Today In Tech Feedback");
                     try {
                         startActivity(Intent.createChooser(email, "Send Feedback:"));
                     } catch (android.content.ActivityNotFoundException ex) {
