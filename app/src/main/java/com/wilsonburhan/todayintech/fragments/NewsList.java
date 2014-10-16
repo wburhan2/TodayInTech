@@ -153,6 +153,12 @@ private ContentObserver contentObserver = new ContentObserver(null) {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        restart();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (menu.size() == 0) {
             inflater.inflate(R.menu.news, menu);
@@ -165,10 +171,14 @@ private ContentObserver contentObserver = new ContentObserver(null) {
         switch (item.getItemId()) {
             case R.id.menu_refresh:
                 mRefreshArticlesListener.onRefreshArticles();
-                getLoaderManager().restartLoader(0, null, this);
+                restart();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void restart(){
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     private String getActiveFeedsTitle() {

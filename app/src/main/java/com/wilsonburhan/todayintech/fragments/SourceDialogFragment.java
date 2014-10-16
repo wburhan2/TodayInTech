@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,11 +86,6 @@ public class SourceDialogFragment extends DialogFragment{
                 }
                 editor.commit();
                 getDialog().dismiss();
-                //TODO To be removed.
-                FragmentManager fm = getFragmentManager();
-                TempDialogFragment fragment = new TempDialogFragment();
-                fragment.show(fm, "TempFragment");
-                //TODO Call Refresh in NewsList
             }
         });
         mListView.setAdapter(myCustomAdapter);

@@ -132,6 +132,7 @@ public class TodayInTechGetRss {
             }
         });
 
+        // Add the Author Name
         channel.getChild("item").getChild(DC, "creator").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
@@ -272,7 +273,7 @@ public class TodayInTechGetRss {
 
         });
 
-        // Add the Author Name
+        // Add the Author URI
         root.getChild(ATOM, "entry").getChild(ATOM, "author").getChild(ATOM, "uri").setEndTextElementListener(new EndTextElementListener() {
             @Override
             public void end(String body) {
