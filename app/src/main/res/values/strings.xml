@@ -14,5 +14,4 @@
     <string name="list">list</string>
     <string name="manage_sources">Manage sources</string>
     <string name="info">There are only 4 sources at the moment and I am planning to add more in the coming future.\n\nThe four sources are:\n- The Verge\n- Mashable\n- CNET\n- Gizmodo\n\nIf you don\'t want to view the feeds from a specific source, you can untick them from the setting.\nAnd also, please be aware that I made this app to gauge where my Android skill levels are and to showcase this app to my potential employer.\n\nFinally, but not least.. Any advise to make the app even better is always welcome! :) </string>
-    <string name="temp_refresh">Please press refresh on main screen for the filter to take place.\nAutomatic refresh will be implemented in the future.</string>
 </resources>

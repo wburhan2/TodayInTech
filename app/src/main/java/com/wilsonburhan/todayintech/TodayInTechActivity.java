@@ -1,6 +1,7 @@
 package com.wilsonburhan.todayintech;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.wilsonburhan.todayintech.fragments.ContentFragment;
 import com.wilsonburhan.todayintech.fragments.NewsList;
@@ -23,7 +25,8 @@ public class TodayInTechActivity extends FragmentActivity implements NewsList.On
         setContentView(R.layout.list_area);
 
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheInMemory(true)
-                .cacheOnDisk(true).resetViewBeforeLoading(true).build();
+                .cacheOnDisk(true).imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.RGB_565).build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
                 .memoryCacheExtraOptions(480, 800) // default = device screen dimensions
