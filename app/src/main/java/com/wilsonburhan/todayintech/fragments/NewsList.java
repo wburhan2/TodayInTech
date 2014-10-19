@@ -10,14 +10,15 @@ import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +44,7 @@ public class NewsList extends Fragment implements LoaderCallbacks<Cursor>, OnIte
     private NewsListAdapter mAdapter;
     @InjectView(R.id.news_list) JazzyListView mListView;
     @InjectView(R.id.top_button) TextView mTopButton;
+    @InjectView(R.id.fragment_container) SwipeRefreshLayout mSwipeRefreshLayout;
 
     public interface OnArticleSelectedListener {
         public void onArticleSelected(long _id);
@@ -98,6 +100,19 @@ private ContentObserver contentObserver = new ContentObserver(null) {
             @Override
             public void onClick(View view) {
                 mListView.smoothScrollToPosition(0);
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        mRefreshArticlesListener.onRefreshArticles();
+                        restart();
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3500);
             }
         });
 
@@ -164,17 +179,6 @@ private ContentObserver contentObserver = new ContentObserver(null) {
             inflater.inflate(R.menu.news, menu);
         }
         getActivity().setTitle(getResources().getString(R.string.app_name));
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                mRefreshArticlesListener.onRefreshArticles();
-                restart();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void restart(){

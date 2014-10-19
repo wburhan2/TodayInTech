@@ -56,7 +56,7 @@ public class NewsListAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewgroup) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.news_feed, null);
+        View view = inflater.inflate(R.layout.news_feed, viewgroup, false);
         view.setTag(R.id.article_title, view.findViewById(R.id.article_title));
         view.setTag(R.id.article_summary, view.findViewById(R.id.article_summary));
         view.setTag(R.id.feed_menu_pic, view.findViewById(R.id.feed_menu_pic));

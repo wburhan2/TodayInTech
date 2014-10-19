@@ -3,7 +3,7 @@
     package="com.wilsonburhan.todayintech"
     android:installLocation="auto">
 
-    <uses-sdk android:minSdkVersion="11"/>
+    <uses-sdk android:minSdkVersion="14"/>
     <!-- Include following permission if you load images from Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Include following permission if you want to cache images on SD card -->

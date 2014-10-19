@@ -1,9 +1,12 @@
 package com.wilsonburhan.todayintech;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +20,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.wilsonburhan.todayintech.fragments.ContentFragment;
 import com.wilsonburhan.todayintech.fragments.NewsList;
 
-public class TodayInTechActivity extends FragmentActivity implements NewsList.OnArticleSelectedListener, NewsList.OnRefreshArticlesListener{
+import java.util.List;
+
+public class TodayInTechActivity extends ActionBarActivity implements NewsList.OnArticleSelectedListener, NewsList.OnRefreshArticlesListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +85,30 @@ public class TodayInTechActivity extends FragmentActivity implements NewsList.On
     }
 
     public void updateStories() {
-        startService(new Intent(TodayInTechContract.ACTION_CLEAR));
-        startService(new Intent(TodayInTechContract.ACTION_GET));
+        startService(getExplicitIapIntent(TodayInTechContract.ACTION_CLEAR));
+        startService(getExplicitIapIntent(TodayInTechContract.ACTION_GET));
     }
+
+    private Intent getExplicitIapIntent(String intent) {
+        PackageManager pm = getPackageManager();
+        Intent implicitIntent = new Intent(intent);
+        List<ResolveInfo> resolveInfos = pm.queryIntentServices(implicitIntent, 0);
+
+        // Is somebody else trying to intercept our IAP call?
+        if (resolveInfos == null || resolveInfos.size() == 0) {
+            return null;
+        }
+
+        ResolveInfo serviceInfo = resolveInfos.get(0);
+        String packageName = serviceInfo.serviceInfo.packageName;
+        String className = serviceInfo.serviceInfo.name;
+        ComponentName component = new ComponentName(packageName, className);
+        Intent iapIntent = new Intent();
+        iapIntent.setAction(intent);
+        iapIntent.setComponent(component);
+        return iapIntent;
+    }
+
 
     @Override
     public void onArticleSelected(long _id) {
