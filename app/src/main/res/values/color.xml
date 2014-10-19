@@ -4,6 +4,5 @@
     <color name="Grey">#6C7B8B</color>
     <color name="Background">#DBDBDB</color>
     <color name="White">#F0F0F0</color>
-    <color name="Primary">#6EB1E5</color>
-    <color name="PrimaryDark">#3278AA</color>
+    <color name="PureWhite">#FFFFFF</color>
 </resources>

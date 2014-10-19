@@ -2,11 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <!--   your app branding color for the app bar -->
-        <item name="colorPrimary">@color/Primary</item>
-        <!--   darker variant for the status bar and contextual app bars -->
-        <item name="colorPrimaryDark">@color/PrimaryDark</item>
-        <item name="windowActionBar">true</item>
+        <item name="colorPrimary">@android:color/holo_blue_light</item>
+        <item name="colorPrimaryDark">@android:color/holo_blue_dark</item>
+        <item name="android:textColorPrimary">@color/PureWhite</item>
     </style>
     <style name="star">
         <item name="android:button">@android:drawable/btn_star</item>
