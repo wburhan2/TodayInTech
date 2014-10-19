@@ -11,5 +11,6 @@
         <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
         <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
         <item name="android:textColorPrimary">@color/PureWhite</item>
+        <item name="android:textColor">@color/Black</item>
     </style>
 </resources>

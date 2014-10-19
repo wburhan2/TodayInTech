@@ -5,6 +5,7 @@
         <item name="colorPrimary">@android:color/holo_blue_light</item>
         <item name="colorPrimaryDark">@android:color/holo_blue_dark</item>
         <item name="android:textColorPrimary">@color/PureWhite</item>
+        <item name="android:textColor">@color/Black</item>
     </style>
     <style name="star">
         <item name="android:button">@android:drawable/btn_star</item>
