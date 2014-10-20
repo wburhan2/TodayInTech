@@ -6,8 +6,14 @@ package com.wilsonburhan.todayintech.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
 import com.wilsonburhan.todayintech.R;
 import com.wilsonburhan.todayintech.TodayInTechContract;
 
@@ -40,15 +48,34 @@ public class NewsListAdapter extends CursorAdapter {
 
         String publishedDate = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHED_DATE));
         String imageUri = cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PICTURE));
-        if (imageUri != null)
-            ImageLoader.getInstance().displayImage(imageUri, imageView);
+        if (imageUri != null) {
+            ImageAware imageAware = new ImageViewAware(imageView, false);
+            ImageLoader.getInstance().displayImage(imageUri, imageAware);
+        }
         else
             imageView.setImageDrawable(null);
         articleTitle.setText(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_TITLE)));
-        if (summary == null)
-            articleSummary.setText(Html.fromHtml(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT))));
-        else
-            articleSummary.setText(Html.fromHtml(summary));
+        SpannableStringBuilder stringBuilder = new SpannableStringBuilder();
+        if (summary == null) {
+            stringBuilder.append(Html.fromHtml(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_CONTENT))));
+            stringBuilder.setSpan(new NonUnderlinedClickableSpan() {
+                      @Override
+                      public void onClick(View widget) {
+                      }
+                  },
+                  0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            articleSummary.setText(stringBuilder);
+        }
+        else {
+            stringBuilder.append(Html.fromHtml(summary));
+            stringBuilder.setSpan(new NonUnderlinedClickableSpan() {
+                      @Override
+                      public void onClick(View widget) {
+                      }
+                  },
+                  0, stringBuilder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            articleSummary.setText(stringBuilder);
+        }
         articlePublisher.setText(cursor.getString(cursor.getColumnIndex(TodayInTechContract.COLUMN_PUBLISHER)));
         articleLastUpdate.setText(getLastUpdateDate(publishedDate));
     }
@@ -104,5 +131,18 @@ public class NewsListAdapter extends CursorAdapter {
             e.printStackTrace();
         }
         return time;
+    }
+
+    class NonUnderlinedClickableSpan extends ClickableSpan
+    {
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            ds.setColor(Color.BLACK);
+            ds.setUnderlineText(false); // set to false to remove underline
+        }
+
+        @Override
+        public void onClick(View widget) {
+        }
     }
 }
