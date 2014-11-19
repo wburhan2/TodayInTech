@@ -103,6 +103,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light, android.R.color.holo_orange_light, android.R.color.holo_red_light);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -112,7 +113,7 @@ private ContentObserver contentObserver = new ContentObserver(null) {
                         restart();
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
-                }, 3500);
+                }, 5000);
             }
         });
 

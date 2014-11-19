@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.support.v4.widget.CursorAdapter;
 import android.text.Html;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
