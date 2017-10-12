@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.wilsonburhan.todayintech.fragments.InfoDialogFragment;
 import com.wilsonburhan.todayintech.fragments.SourceDialogFragment;
 
-import org.apache.http.protocol.HTTP;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +71,7 @@ public class TodayInTechSettingActivity extends FragmentActivity {
                     break;
                 case FEEDBACK:
                     Intent email = new Intent(Intent.ACTION_SENDTO);
-                    email.setType(HTTP.PLAIN_TEXT_TYPE);
+                    email.setType("plain/text");
                     email.setData(Uri.parse("mailto:wilson.burhan@gmail.com"));
                     email.putExtra(Intent.EXTRA_SUBJECT, "Today In Tech Feedback");
                     try {
